@@ -15,6 +15,10 @@ public class ApplicationStartupRunner implements ApplicationRunner {
 
     @Override
     public void run( ApplicationArguments args ) throws Exception {
+        createStartupEntitiesOnDatabase();
+    }
+
+    private void createStartupEntitiesOnDatabase() {
         User startupUser = createStartupUser();
         userRepository.save( startupUser );
     }
@@ -23,7 +27,7 @@ public class ApplicationStartupRunner implements ApplicationRunner {
         User user = new User();
         user.setPassword( "admin" );
         user.setUsername( "admin" );
-        
+
         return user;
     }
 }
