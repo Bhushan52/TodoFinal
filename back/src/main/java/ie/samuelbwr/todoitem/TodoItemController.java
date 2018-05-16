@@ -1,10 +1,9 @@
 package ie.samuelbwr.todoitem;
 
+import ie.samuelbwr.security.AuthenticatedUser;
 import ie.samuelbwr.todoitem.exceptions.TodoItemAlreadyRegisteredException;
 import ie.samuelbwr.todoitem.exceptions.TodoItemNotFoundException;
-import ie.samuelbwr.todoitem.exceptions.TodoListNotFoundException;
 import ie.samuelbwr.user.User;
-import ie.samuelbwr.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,29 +18,23 @@ public class TodoItemController {
     @Autowired
     private TodoItemRepository repository;
 
-    @Autowired
-    private UserRepository todoListRepository;
-
     @GetMapping
-    public List<TodoItem> getItems() {
-        //TODO: Change to Session user id
-        return repository.findAllByUser_Id( 1L );
+    public List<TodoItem> getItems( @AuthenticatedUser User user ) {
+        return repository.findAllByUser_Id( user.getId() );
     }
 
     @PostMapping
-    public TodoItem addItem( @PathVariable( name = "userId" ) Long userId,
+    public TodoItem addItem( @AuthenticatedUser User user,
                              @RequestBody TodoItem todoItem ) {
         if ( todoItem.getId() != null )
             throw new TodoItemAlreadyRegisteredException();
 
-        //TODO: Change to Session user
-        User user = todoListRepository.findById( userId ).orElseThrow( TodoListNotFoundException::new );
         todoItem.setUser( user );
         return repository.save( todoItem );
     }
 
-    @PatchMapping( "{ItemId}" )
-    public TodoItem updateItem( @PathVariable( name = "ItemId" ) Long itemId,
+    @PatchMapping( "{itemId}" )
+    public TodoItem updateItem( @PathVariable( name = "itemId" ) Long itemId,
                                 @RequestBody TodoItem todoItem ) {
         TodoItem itemToUpdate = repository.findById( itemId ).orElseThrow( TodoItemNotFoundException::new );
 
@@ -51,7 +44,7 @@ public class TodoItemController {
     }
 
     @GetMapping( "{itemId}/toggle" )
-    public TodoItem toggleItemCompleteness( @PathVariable( name = "ItemId" ) Long itemId ) {
+    public TodoItem toggleItemCompleteness( @PathVariable( name = "itemId" ) Long itemId ) {
         TodoItem itemToUpdate = repository.findById( itemId ).orElseThrow( TodoItemNotFoundException::new );
 
         itemToUpdate.setCompleted( !itemToUpdate.getCompleted() );
