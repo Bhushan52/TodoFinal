@@ -1,5 +1,7 @@
 package ie.samuelbwr.user;
 
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +14,9 @@ public class User {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
+    @Setter
     private String username;
 
+    @Setter
     private String password;
 }
