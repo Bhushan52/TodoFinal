@@ -1,4 +1,4 @@
-package ie.samuelbwr.todolist;
+package ie.samuelbwr;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
