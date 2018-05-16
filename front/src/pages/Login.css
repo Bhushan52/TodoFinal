@@ -1,0 +1,18 @@
+.Login-container{
+  	width: 500px;
+  	margin: 300px auto;
+}
+.Login-form-container{
+	height: 340px;
+}
+.Login-form-heading{
+	padding-top: 30px;
+	color: #999;
+	text-align: center;
+}
+.Login-title{
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-size: 44px;
+    text-align: center;
+}
