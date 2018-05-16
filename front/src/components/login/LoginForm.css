@@ -1,11 +1,12 @@
-.Login-form-input{
-	width: 431px;
-}
-.Login-form-submit-container{
-	width: 300px;
-	padding-top: 20px;
+.Login-form-wrapper{
+	text-align: center;
 }
 
-.Login-form-submit-container .Login-form-submit-btn{
-	margin-top: 20px;
+.Login-form-wrapper .Login-form-input{
+	width: 431px;
+}
+
+.Login-form-wrapper .Login-form-submit-btn{
+	margin-top: 36px;
+    width: 50%;
 }
