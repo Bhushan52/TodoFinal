@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <main.basedir>${project.basedir}</main.basedir>
-        <spring-boot.version>${parent.version}</spring-boot.version>
+        <spring-boot.version>${project.parent.version}</spring-boot.version>
     </properties>
 
     <modules>
