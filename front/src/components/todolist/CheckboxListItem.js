@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import ListItem from '@material-ui/core/ListItem';
 import './CheckboxListItem.css';
 import {updateTodo} from '../../api/todoApi';
+import moment from 'moment'
 
 class CheckboxListItem extends Component {
   constructor(props) {
@@ -23,10 +24,16 @@ class CheckboxListItem extends Component {
 
   handleItemUpdate = () => {
     updateTodo(this.state).then(response => {
-      console.log("todo updated")
+      this.setState({
+        lastUpdate: response.lastUpdate
+      })
     })
   }
 
+  getRelativeLastUpdateTime(){
+    console.log(this.state.lastUpdate);
+    return moment(this.state.lastUpdate).fromNow();
+  }
   render() {
     return (
       <ListItem
@@ -39,7 +46,10 @@ class CheckboxListItem extends Component {
 	      	<TextField value={this.state[this.props.textField]} 
 	          	onChange={this.handleChange(this.props.textField, 'value')} 
               onBlur={this.handleItemUpdate}
-	          	fullWidth/>	  	
+	          	fullWidth
+              multiline
+              margin="dense"
+              helperText={this.getRelativeLastUpdateTime()}/>	  	
           
             <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.state.id)}>
               <Icon>delete</Icon>

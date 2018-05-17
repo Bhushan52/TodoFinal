@@ -14,6 +14,7 @@ mvn spring-boot:run
 - Front-end
 
 ``
+yarn install
 yarn start
 ``
 
