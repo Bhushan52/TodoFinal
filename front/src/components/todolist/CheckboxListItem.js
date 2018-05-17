@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-//import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-//import IconButton from '@material-ui/core/IconButton';
-//import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import ListItem from '@material-ui/core/ListItem';
+import './CheckboxListItem.css';
 
 class CheckboxListItem extends Component {
   constructor(props) {
@@ -19,17 +19,10 @@ class CheckboxListItem extends Component {
       [name]: event.target[valueProperty],
     });
   }
-
-  handleCheckboxChange = name => event => {
-    this.setState({
-      [name]: event.target.checked,
-    });
-  }
-
   render() {
     return (
       <ListItem
-	      role={undefined}
+        className={this.state.completed?'CheckboxListItem-completed':''}
 	      dense>
 	      	<Checkbox
 	            checked={this.state[this.props.toggleField]}            
@@ -37,7 +30,11 @@ class CheckboxListItem extends Component {
 	            disableRipple/>
 	      	<TextField value={this.state[this.props.textField]} 
 	          	onChange={this.handleChange(this.props.textField, 'value')} 
-	          	fullWidth/>	  		
+	          	fullWidth/>	  	
+          
+            <IconButton aria-label="Delete">
+              <Icon>delete</Icon>
+            </IconButton>
 	    </ListItem>
     );
   }
