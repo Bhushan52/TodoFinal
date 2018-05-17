@@ -1,0 +1,12 @@
+.Login-form-wrapper{
+	text-align: center;
+}
+
+.Login-form-wrapper .Login-form-input{
+	width: 431px;
+}
+
+.Login-form-wrapper .Login-form-submit-btn{
+	margin-top: 36px;
+    width: 50%;
+}
