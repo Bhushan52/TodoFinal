@@ -87,7 +87,9 @@ class TodoList extends Component {
     return (
       <div>
         <div className="TodoList_header">
-          <Logo className="TodoList_Logo"/>
+          <Logo className="TodoList_logo"/>
+          <Button size="small" className="TodoList_logout"
+            onClick={this.props.onLogout}>LOGOUT</Button>
         </div>
 
         <div className="TodoList_body">

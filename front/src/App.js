@@ -2,13 +2,14 @@ import React from 'react';
 import Login from './pages/Login';
 import TodoList from './pages/TodoList';
 import Grid from '@material-ui/core/Grid';
-import {getSessionUser} from './api/userApi';
+import {getSessionUser, logout} from './api/userApi';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentUser: null, isAuthenticated: true, isLoading: false };
+    this.state = { currentUser: null, isAuthenticated: false, isLoading: false };
     this.loadSessionUser = this.loadSessionUser.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   loadSessionUser = () => {
@@ -40,6 +41,11 @@ class App extends React.Component {
     this.assignUser(null);
   }
 
+  handleLogout(){
+    this.assignUser(null)
+    logout();
+  }
+
   setUserState = (user, isAuthenticated, isLoading) =>{
     this.setState(() => ({
       currentUser: user,
@@ -50,7 +56,7 @@ class App extends React.Component {
 
   getPageToRender(){
     if(this.state.isAuthenticated)
-      return <TodoList/>;
+      return <TodoList onLogout={this.handleLogout}/>;
   
     return <Login onAuthenticationSuccess={this.handleAuthenticationSuccess} 
       onAuthenticationFail={this.handleAuthenticationFail}/>
