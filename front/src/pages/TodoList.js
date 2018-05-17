@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import {getTodos, addTodo, deleteTodo} from '../api/todoApi';
+import Paper from '@material-ui/core/Paper';
 import './TodoList.css';
 
 class TodoList extends Component {
@@ -90,16 +91,19 @@ class TodoList extends Component {
         </div>
 
         <div className="TodoList_body">
+
+         <Paper className="TodoList_container" elevation={6} >
+            <Typography variant="display1" gutterBottom>
+              To do
+            </Typography>
+            <Divider />
+            {this.renderTodoList(this.state.todos)}
+          </Paper>
           <Button variant="fab" color="primary" aria-label="add" className="TodoList_button_add" onClick={this.handleAddTodo}>
             <Icon>add</Icon>
           </Button>
-
-          <Typography variant="display1" gutterBottom>
-            Todo
-          </Typography>
-          <Divider />
-          {this.renderTodoList(this.state.todos)}
         </div>  
+        
       </div>
     );
   }
@@ -107,7 +111,7 @@ class TodoList extends Component {
   renderTodoList = items => {
     console.log("items")
     console.log(items)
-    if(items !== [])
+    if(items !== null && Object.keys(items).length > 0)
       return (
       <CheckboxList items={items} 
         toggleField="completed" 

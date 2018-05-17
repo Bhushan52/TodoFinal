@@ -1,5 +1,6 @@
-.Todolist-container{
-  	margin-top: 30px;
+.TodoList_container{
+  	padding: 47px;
+  	margin-bottom: 50px;
 }
 .TodoList_body .TodoList_button_add{
 	position: fixed;
