@@ -7,3 +7,11 @@
 	bottom: 30px;
 	right: 30px;
 }
+.TodoList_header{
+	position: relative;
+}
+.TodoList_header .TodoList_logout{
+	position: absolute;
+    top: -12px;
+    right: 16px;
+}

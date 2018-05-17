@@ -2,6 +2,7 @@ import {doRequest} from './base'
 
 const USER_PATH = "/api/user";
 const AUTHENTICATION_PATH = "/login";
+const LOGOUT_PATH = "/logout";
 
 export const getSessionUser = () => {
      return doRequest(USER_PATH)
@@ -17,6 +18,10 @@ export const authenticate = (username, password) => {
 	    },
 	    body: loginParams({username, password})
 	 });
+}
+
+export const logout = () => {
+     return doRequest(LOGOUT_PATH);
 }
 
 const loginParams = (params) => Object.keys(params).map((key) => {
