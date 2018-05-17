@@ -1,5 +1,4 @@
 export const doRequest = (path, params) => {
-	debugger;
 	let mergedParams = {
 	    credentials: 'same-origin',
 	    ... params
@@ -14,5 +13,11 @@ export const doPostRequest = (path, body) => {
 	    },
 	    method: 'post', 
 	    body: JSON.stringify(body)
+	})
+}
+
+export const doDeleteRequest = (path) => {
+	return doRequest(path, { 
+	    method: 'delete'
 	})
 }

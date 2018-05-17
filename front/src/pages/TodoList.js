@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import {getTodos, addTodo} from '../api/todoApi';
+import {getTodos, addTodo, deleteTodo} from '../api/todoApi';
 import './TodoList.css';
 
 class TodoList extends Component {
@@ -45,13 +45,19 @@ class TodoList extends Component {
     return {text, completed, lastUpdate};
   }
 
-  handleItemDelete = item => {
+  handleItemDelete = itemId => event => {
+    
+    deleteTodo(itemId).then(response => {
+      let updated = { ...this.state.todos }
+      delete updated[itemId];
+      this.setState(prevState => ({
+        todos: updated
+      }))
 
+    })
   }
 
   renderTodoList = items => {
-    console.log("items");
-    console.log(items);
     if(items !== null && items !== undefined)
       return (
       <CheckboxList items={items} 
@@ -63,19 +69,16 @@ class TodoList extends Component {
 
   handleAddTodo(){
     addTodo(this.createTodo()).then(response => {
-        this.addTodoToState(response);
-      })
+      this.addTodoToState(response);
+    })
   }
 
-  addTodoToState(newTodo){
-    let newId = newTodo.id;
-    let updated = {...this.state.todos }
+  addTodoToState(newTodo){    
+    let updated = { ...this.state.todos }
     updated[newTodo.id] = this.createTodo(newTodo.text, newTodo.completed, newTodo.lastUpdate)
     this.setState(prevState => ({
       todos: updated
     }))
-    console.log("stateee");
-    console.log(this.state);
   }
   createTodo = () => ({id: null, text: '', completed:false});
 
