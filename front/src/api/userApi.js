@@ -1,7 +1,9 @@
+import {doRequest} from './base'
+
 const USER_PATH = "/api/user";
 const AUTHENTICATION_PATH = "/login";
 
-export const getSessionUser = (handleAuthentication) => {
+export const getSessionUser = () => {
      return doRequest(USER_PATH)
     .then(response => response.json());
 }
@@ -13,14 +15,6 @@ export const authenticate = (username, password) => {
 	      'Content-Type': 'application/x-www-form-urlencoded'
 	    },
 	    body: loginParams({username, password})
-	 });
-}
-
-const doRequest = (path, params) =>{
-	return fetch(path, {
-	    mode: 'no-cors',
-	    credentials: 'same-origin',
-	    ...params
 	 });
 }
 

@@ -8,7 +8,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { currentUser: null, isAuthenticated: true, isLoading: false };
-  
     this.loadSessionUser = this.loadSessionUser.bind(this);
   }
 

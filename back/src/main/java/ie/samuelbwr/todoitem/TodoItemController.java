@@ -12,7 +12,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @RestController
-@RequestMapping( "/api/todo" )
+@RequestMapping( "/api/todos" )
 public class TodoItemController {
 
     @Autowired
