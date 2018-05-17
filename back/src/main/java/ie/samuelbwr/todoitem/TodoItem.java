@@ -1,5 +1,6 @@
 package ie.samuelbwr.todoitem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ie.samuelbwr.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +34,6 @@ public class TodoItem {
 
     @ManyToOne
     @Setter
+    @JsonIgnore
     private User user;
 }
