@@ -45,6 +45,9 @@
                         <phase>prepare-package</phase>
                         <configuration>
                             <arguments>build</arguments>
+                            <environmentVariables>
+                                <envirnment>production</envirnment>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                     <execution>

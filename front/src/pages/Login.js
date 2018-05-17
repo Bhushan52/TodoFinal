@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import './Login.css';
 import Logo from '../components/Logo';
 import LoginForm from '../components/login/LoginForm';
+import {authenticate} from '../api/userApi';
 
 class Login extends Component {
   constructor(props) {
@@ -17,7 +18,14 @@ class Login extends Component {
   }
 
   authenticate = () =>{
-    console.log('authenticating as you blink..');
+    authenticate(this.state.username, this.state.password)
+    .then(response => {
+        this.props.onAuthenticationSuccess();
+      })
+    .catch(error => {
+        this.props.onAuthenticationFail();
+      }
+    );
   }
 
   render() {

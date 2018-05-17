@@ -26,17 +26,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure( HttpSecurity http ) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/*.js", "/*.jsx", "/main.css" )
+                .antMatchers( "/*.js" )
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                    .loginPage( "/login" )
-                .defaultSuccessUrl( "/", true )
+                .successHandler( ( httpServletRequest, httpServletResponse, authentication ) -> {//nothnkg
+                     } )
                 .permitAll()
                 .and()
-                .httpBasic()
-                .and()
+                .cors().disable()
                 .csrf().disable()
                 .logout()
                 .logoutSuccessUrl( "/" );
