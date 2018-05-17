@@ -8,16 +8,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { currentUser: null, isAuthenticated: true, isLoading: false };
-    this.handleAuthentication = this.handleAuthentication.bind(this);
+  
     this.loadSessionUser = this.loadSessionUser.bind(this);
   }
 
   loadSessionUser = () => {
     getSessionUser()
-    .then(user => this.handleAuthentication(user))
+    .then(user => this.assignUser(user))
     .catch(error => {
         console.log(error);
-        this.handleAuthentication(null);
+        this.assignUser(null);
       }
     );
   }
@@ -26,11 +26,19 @@ class App extends React.Component {
     this.loadSessionUser();
   }
 
-  handleAuthentication = (user) => {
+  assignUser = (user) => {
     if(user !==  null)
       this.setUserState(user, true, false)
     else
       this.setUserState(null, false, false)
+  }
+
+  handleAuthenticationSuccess = () =>{
+    this.loadSessionUser();
+  }
+
+  handleAuthenticationFail = () => {
+    this.assignUser(null);
   }
 
   setUserState = (user, isAuthenticated, isLoading) =>{
@@ -45,7 +53,8 @@ class App extends React.Component {
     if(this.state.isAuthenticated)
       return <TodoList/>;
   
-    return <Login onAuthentication={this.handleAuthentication}/>
+    return <Login onAuthenticationSuccess={this.handleAuthenticationSuccess} 
+      onAuthenticationFail={this.handleAuthenticationFail}/>
   }
 
   render(){

@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -15,6 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername( String username ) throws UsernameNotFoundException {
-        return this.repository.findByUsername( username );
+        return Optional.ofNullable( this.repository.findByUsername( username ))
+                .orElseThrow( () -> new UsernameNotFoundException( "This username is not registered." ) );
     }
 }
