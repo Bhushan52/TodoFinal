@@ -15,19 +15,18 @@ public class ApplicationStartupRunner implements ApplicationRunner {
 
     @Override
     public void run( ApplicationArguments args ) throws Exception {
-        createStartupEntitiesOnDatabase();
+        createAdminUser();
     }
 
-    private void createStartupEntitiesOnDatabase() {
-        User startupUser = createStartupUser();
-        userRepository.save( startupUser );
+    private void createAdminUser() {
+        User admin = createUser( "admin", "admin" );
+        userRepository.save( admin );
     }
 
-    private User createStartupUser() {
+    private User createUser( String username, String password ) {
         User user = new User();
-        user.setPassword( "admin" );
-        user.setUsername( "admin" );
-
+        user.setPassword( username );
+        user.setUsername( password );
         return user;
     }
 }

@@ -35,9 +35,11 @@ public class TodoItemController {
     public TodoItem updateItem( @PathVariable( name = "itemId" ) Long itemId,
                                 @AuthenticatedUser User user,
                                 @RequestBody TodoItem todoItem ) {
-        repository.existsByIdAndUser( itemId, user ).orElseThrow( TodoItemNotFoundException::new );
-        todoItem.setId( itemId );
-        return repository.save( todoItem );
+        TodoItem item = repository.findByIdAndUser( itemId, user ).orElseThrow( TodoItemNotFoundException::new );
+
+        item.setCompleted( todoItem.getCompleted() );
+        item.setText( todoItem.getText() );
+        return repository.save( item );
     }
 
     @DeleteMapping( "{itemId}" )

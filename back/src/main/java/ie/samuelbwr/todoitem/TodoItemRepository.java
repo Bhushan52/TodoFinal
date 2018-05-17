@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface TodoItemRepository extends CrudRepository<TodoItem, Long> {
 
-    Optional<Boolean> existsByIdAndUser( Long itemId, User user );
-
     @Transactional
     void deleteByIdAndUser( Long itemId, User user );
 
     List<TodoItem> findAllByUser( User user );
+
+    Optional<TodoItem> findByIdAndUser( Long itemId, User user );
 }
