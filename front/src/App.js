@@ -2,6 +2,7 @@ import React from 'react';
 import Login from './pages/Login';
 import TodoList from './pages/TodoList';
 import Grid from '@material-ui/core/Grid';
+import {getSessionUser} from './api/userApi';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,24 +13,27 @@ class App extends React.Component {
   }
 
   loadSessionUser = () => {
-    this.setState(null, false, true);
-    // getSessionUser()
-    // .then( user => {
-    //   this.handleAuthentication(user);
-    // }).catch(error => {
-    //   this.handleAuthentication(null);
-    // })
+    getSessionUser()
+    .then(user => this.handleAuthentication(user))
+    .catch(error => {
+        console.log(error);
+        this.handleAuthentication(null);
+      }
+    );
+  }
+
+  componentDidMount = () => {
+    this.loadSessionUser();
   }
 
   handleAuthentication = (user) => {
     if(user !==  null)
-      this.setState(user, true, false)
+      this.setUserState(user, true, false)
     else
-      this.setState(null, false, false)
+      this.setUserState(null, false, false)
   }
 
-  
-  setState = (user, isAuthenticated, isLoading) =>{
+  setUserState = (user, isAuthenticated, isLoading) =>{
     this.setState(() => ({
       currentUser: user,
       isAuthenticated: isAuthenticated,
@@ -37,7 +41,7 @@ class App extends React.Component {
     }))
   }
 
-  getCurrentPage(){
+  getPageToRender(){
     if(this.state.isAuthenticated)
       return <TodoList/>;
   
@@ -45,15 +49,15 @@ class App extends React.Component {
   }
 
   render(){
-  return (
-    <Grid container 
-      className="App-container"
-      alignItems="center"
-      justify="center">
-      <Grid item lg={6} className="App-container-item">
-        {this.getCurrentPage()}
+    return (
+      <Grid container 
+        className="App-container"
+        alignItems="center"
+        justify="center">
+        <Grid item lg={6} className="App-container-item">
+          {this.getPageToRender()}
+        </Grid>
       </Grid>
-    </Grid>
   )}
 }
 
