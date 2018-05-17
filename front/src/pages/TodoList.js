@@ -15,13 +15,14 @@ class TodoList extends Component {
     this.loadTodos = this.loadTodos.bind(this);
     this.createTodo = this.createTodo.bind(this);
     this.handleAddTodo = this.handleAddTodo.bind(this);
-    // this.addTodoToState = this.addTodoToState.bind(this);
-    
   }
 
   loadTodos(){
     getTodos().then(response => {
+        console.log("Initial load");
+        console.log(response);
         let formattedTodos = this.convertToObjects(response);
+        console.log(formattedTodos);
         this.setState({todos: formattedTodos});
       })
     .catch(error => {
@@ -32,9 +33,10 @@ class TodoList extends Component {
 
   convertToObjects(response){
     let todos = {};
-    response.map(item => {
-      todos[item.id] = this.createTodo(item.text, item.completed, item.lastUpdate);
+    response.map( item => {
+      return todos[item.id] = this.createTodo(item.text, item.completed, item.lastUpdate);
     } )
+    return todos;
   }
 
   componentWillMount() {
@@ -42,45 +44,43 @@ class TodoList extends Component {
   }
 
   createTodo(text, completed, lastUpdate){
-    return {text, completed, lastUpdate};
+    return {text: (text==null ? '' : text), completed, lastUpdate};
   }
 
   handleItemDelete = itemId => event => {
-    
     deleteTodo(itemId).then(response => {
       let updated = { ...this.state.todos }
       delete updated[itemId];
-      this.setState(prevState => ({
-        todos: updated
-      }))
-
+      this.updateTodosState(updated);
     })
-  }
-
-  renderTodoList = items => {
-    if(items !== null && items !== undefined)
-      return (
-      <CheckboxList items={items} 
-        toggleField="completed" 
-        textField="text"
-        onItemDelete={this.handleItemDelete}/>)
-    return <p>You don't have any Todo items. Get productive, add some.</p>;
   }
 
   handleAddTodo(){
     addTodo(this.createTodo()).then(response => {
       this.addTodoToState(response);
-    })
+    });
+    getTodos().then(response => {
+        console.log("getTodos");
+        console.log(response);
+      })
+    .catch(error => {
+        this.setState({error: "Unable to retrieve todo's"});
+      }
+    );
   }
 
   addTodoToState(newTodo){    
     let updated = { ...this.state.todos }
-    updated[newTodo.id] = this.createTodo(newTodo.text, newTodo.completed, newTodo.lastUpdate)
-    this.setState(prevState => ({
-      todos: updated
-    }))
+    updated[newTodo.id] = this.createBlankTodo(newTodo.text, newTodo.completed, newTodo.lastUpdate)
+    this.updateTodosState(updated);
   }
-  createTodo = () => ({id: null, text: '', completed:false});
+
+  updateTodosState(updatedTodos){
+    this.setState({
+        todos: updatedTodos
+      })
+  }
+  createBlankTodo = () => ({id: null, text: '', completed:false});
 
   render() {
     return (
@@ -102,6 +102,18 @@ class TodoList extends Component {
         </div>  
       </div>
     );
+  }
+
+  renderTodoList = items => {
+    console.log("items")
+    console.log(items)
+    if(items !== [])
+      return (
+      <CheckboxList items={items} 
+        toggleField="completed" 
+        textField="text"
+        onItemDelete={this.handleItemDelete}/>)
+    return <p>You don't have any Todo items. Get productive, add some.</p>;
   }
 }
 

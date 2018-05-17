@@ -31,8 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successHandler( ( httpServletRequest, httpServletResponse, authentication ) -> {//nothnkg
-                     } )
+                .successHandler( ( httpServletRequest, httpServletResponse, authentication ) -> {
+                    //do not redirect after successful login
+                } )
                 .permitAll()
                 .and()
                 .cors().disable()

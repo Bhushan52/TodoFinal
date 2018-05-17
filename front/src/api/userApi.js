@@ -11,6 +11,7 @@ export const getSessionUser = () => {
 export const authenticate = (username, password) => {
      return doRequest(AUTHENTICATION_PATH, {
 	    method: 'post',
+	    mode:'no-cors',
 	    headers: {
 	      'Content-Type': 'application/x-www-form-urlencoded'
 	    },
