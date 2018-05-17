@@ -7,8 +7,6 @@ import ie.samuelbwr.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.List;
 
 @RestController
@@ -20,7 +18,7 @@ public class TodoItemController {
 
     @GetMapping
     public List<TodoItem> getItems( @AuthenticatedUser User user ) {
-        return repository.findAllByUser_Id( user.getId() );
+        return repository.findAllByUser( user );
     }
 
     @PostMapping
@@ -33,27 +31,18 @@ public class TodoItemController {
         return repository.save( todoItem );
     }
 
-    @PatchMapping( "{itemId}" )
+    @PutMapping( "{itemId}" )
     public TodoItem updateItem( @PathVariable( name = "itemId" ) Long itemId,
+                                @AuthenticatedUser User user,
                                 @RequestBody TodoItem todoItem ) {
-        TodoItem itemToUpdate = repository.findById( itemId ).orElseThrow( TodoItemNotFoundException::new );
-
-        itemToUpdate.setText( todoItem.getText() );
-        itemToUpdate.setLastUpdate( Instant.now().atZone( ZoneId.systemDefault() ) );
-        return repository.save( itemToUpdate );
-    }
-
-    @GetMapping( "{itemId}/toggle" )
-    public TodoItem toggleItemCompleteness( @PathVariable( name = "itemId" ) Long itemId ) {
-        TodoItem itemToUpdate = repository.findById( itemId ).orElseThrow( TodoItemNotFoundException::new );
-
-        itemToUpdate.setCompleted( !itemToUpdate.getCompleted() );
-        itemToUpdate.setLastUpdate( Instant.now().atZone( ZoneId.systemDefault() ) );
-        return repository.save( itemToUpdate );
+        repository.existsByIdAndUser( itemId, user ).orElseThrow( TodoItemNotFoundException::new );
+        todoItem.setId( itemId );
+        return repository.save( todoItem );
     }
 
     @DeleteMapping( "{itemId}" )
-    public void deleteItem( @PathVariable( name = "itemId" ) Long itemId) {
-        repository.deleteById( itemId );
+    public void deleteItem( @AuthenticatedUser User user,
+                            @PathVariable( name = "itemId" ) Long itemId ) {
+        repository.deleteByIdAndUser( itemId, user );
     }
 }

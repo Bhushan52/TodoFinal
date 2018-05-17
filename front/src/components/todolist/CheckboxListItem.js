@@ -5,6 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import ListItem from '@material-ui/core/ListItem';
 import './CheckboxListItem.css';
+import {updateTodo} from '../../api/todoApi';
 
 class CheckboxListItem extends Component {
   constructor(props) {
@@ -14,11 +15,18 @@ class CheckboxListItem extends Component {
     };
   }
 
-  handleChange = (name, valueProperty) => event => {
+  handleChange = (name, valueProperty, callback) => event => {
     this.setState({
       [name]: event.target[valueProperty],
-    });
+    }, callback);
   }
+
+  handleItemUpdate = () => {
+    updateTodo(this.state).then(response => {
+      console.log("todo updated")
+    })
+  }
+
   render() {
     return (
       <ListItem
@@ -26,10 +34,11 @@ class CheckboxListItem extends Component {
 	      dense>
 	      	<Checkbox
 	            checked={this.state[this.props.toggleField]}            
-	            onChange={this.handleChange(this.props.toggleField, 'checked')}
+	            onChange={this.handleChange(this.props.toggleField, 'checked', this.handleItemUpdate)}
 	            disableRipple/>
 	      	<TextField value={this.state[this.props.textField]} 
 	          	onChange={this.handleChange(this.props.textField, 'value')} 
+              onBlur={this.handleItemUpdate}
 	          	fullWidth/>	  	
           
             <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.state.id)}>

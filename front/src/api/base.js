@@ -1,17 +1,17 @@
 export const doRequest = (path, params) => {
 	let mergedParams = {
 	    credentials: 'same-origin',
-	    ... params
+	    ...params
 	 }
 	return fetch(path, mergedParams);
 }
 
-export const doPostRequest = (path, body) => {
+export const doRequestWithBody = (path, method, body) => {
 	return doRequest(path, { 
 	    headers: {
 	      'content-type': 'application/json'
 	    },
-	    method: 'post', 
+	    method, 
 	    body: JSON.stringify(body)
 	})
 }
