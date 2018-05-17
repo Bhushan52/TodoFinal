@@ -33,13 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successHandler( ( httpServletRequest, httpServletResponse, authentication ) -> {
                     //do not redirect after successful login
-                } )
-                .permitAll()
-                .and()
-                .cors().disable()
-                .csrf().disable()
-                .logout()
-                .logoutSuccessUrl( "/" );
+                } ).permitAll()
+                .and().csrf().disable()
+                .logout().logoutSuccessUrl( "/" );
     }
 
 }

@@ -8,4 +8,6 @@ public interface UserRepository extends Repository<User, Long> {
 
     User findByUsername( String username );
 
+    void deleteAll();
+
 }
