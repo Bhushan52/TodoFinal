@@ -52,4 +52,8 @@ public class TodoItemController {
         return repository.save( itemToUpdate );
     }
 
+    @DeleteMapping( "{itemId}" )
+    public void deleteItem( @PathVariable( name = "itemId" ) Long itemId) {
+        repository.deleteById( itemId );
+    }
 }

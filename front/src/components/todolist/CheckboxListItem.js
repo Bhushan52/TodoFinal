@@ -32,7 +32,7 @@ class CheckboxListItem extends Component {
 	          	onChange={this.handleChange(this.props.textField, 'value')} 
 	          	fullWidth/>	  	
           
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.state.id)}>
               <Icon>delete</Icon>
             </IconButton>
 	    </ListItem>
