@@ -2,7 +2,8 @@ import React from 'react';
 import Login from './pages/Login';
 import TodoList from './pages/TodoList';
 import Grid from '@material-ui/core/Grid';
-import {getSessionUser, logout} from './api/userApi';
+import MainContainer from './components/MainContainer';
+import {getSessionUser, logout} from './api/UserApi';
 
 class App extends React.Component {
   constructor(props) {
@@ -56,7 +57,10 @@ class App extends React.Component {
 
   getPageToRender(){
     if(this.state.isAuthenticated)
-      return <TodoList onLogout={this.handleLogout}/>;
+      return (
+        <MainContainer onLogout={this.handleLogout}>
+          <TodoList/>
+        </MainContainer>);
   
     return <Login onAuthenticationSuccess={this.handleAuthenticationSuccess} 
       onAuthenticationFail={this.handleAuthenticationFail}/>
