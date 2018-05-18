@@ -48,7 +48,7 @@ class CheckboxListItem extends Component {
               margin="dense"
               helperText={getRelativeTime(this.state.lastUpdate)}/>	  	
           
-            <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.state.id)}>
+            <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.props.id)}>
               <Icon>delete</Icon>
             </IconButton>
 	    </ListItem>

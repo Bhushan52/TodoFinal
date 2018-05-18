@@ -26,15 +26,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure( HttpSecurity http ) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/*.js" )
-                .permitAll()
-                .anyRequest().authenticated()
+                .antMatchers( "*.js" ).permitAll()
+                .antMatchers("/api/**").authenticated()
                 .and()
                 .formLogin()
                 .successHandler( ( httpServletRequest, httpServletResponse, authentication ) -> {
                     //do not redirect after successful login
                 } ).permitAll()
-                .and().csrf().disable()
+                .and()
+                .csrf().disable()
                 .logout().logoutSuccessUrl( "/" );
     }
 

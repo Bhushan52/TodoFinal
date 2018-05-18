@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith( SpringRunner.class )
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoItemIT {
+public class TodoItemITest {
 
     private static final String TODO_TEXT = "Test";
 
@@ -43,7 +43,7 @@ public class TodoItemIT {
         MockHttpSession session = AuthenticationHelper.createAdminSession( mockMvc );
         createTodo( session ).andDo( print() )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$.id", equalTo( 2 ) ) )
+                .andExpect( jsonPath( "$.id", equalTo( 1 ) ) )
                 .andExpect( jsonPath( "$.text", equalTo( TODO_TEXT ) ) )
                 .andExpect( jsonPath( "$.completed", equalTo( false ) ) )
                 .andExpect( jsonPath( "$.lastUpdate", notNullValue() ) );
@@ -74,7 +74,7 @@ public class TodoItemIT {
     @Test
     public void shouldUpdateTodoItem() throws Exception {
         String updatedText = "Updated text";
-        Integer id = 3;
+        Integer id = 2;
         MockHttpSession session = AuthenticationHelper.createAdminSession( mockMvc );
         createTodo( session );
         this.mockMvc.perform( put( "/api/todos/" + id )
