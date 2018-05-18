@@ -90,10 +90,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/classes/static</outputDirectory>
+							<outputDirectory>${project.basedir}/target/classes/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${main.basedir}/frontend/build</directory>
+									<directory>../front/build</directory>
 									<filtering>false</filtering>
 								</resource>
 							</resources>
