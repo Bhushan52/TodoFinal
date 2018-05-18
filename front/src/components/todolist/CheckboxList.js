@@ -4,9 +4,9 @@ import CheckboxListItem from './CheckboxListItem';
 
 const CheckboxList = props => (
   <div>
-    <List className="Checkboxlist">
-      {Object.keys(props.items).map((key, index) => {      	
-        return (<CheckboxListItem key={key} id={key} className="CheckboxListItem-container" item={props.items[key]} {...props}/>);
+    <List>
+      {Object.keys(props.items).sort(key => props.items[key].completed).map((key, index) => {      	
+        return (<CheckboxListItem key={key} id={key} item={props.items[key]} {...props}/>);
       })}
     </List>
   </div>

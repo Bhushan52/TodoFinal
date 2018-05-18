@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith( SpringRunner.class )
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TodoListIT {
+public class TodoItemIT {
 
     private static final String TODO_TEXT = "Test";
 

@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import Logo from '../components/Logo';
 import CheckboxList from '../components/todolist/CheckboxList';
 import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import {getTodos, addTodo, deleteTodo} from '../api/todoApi';
-import Paper from '@material-ui/core/Paper';
+import {getTodos, addTodo, deleteTodo} from '../api/TodoApi';
 import './TodoList.css';
 
 class TodoList extends Component {
@@ -20,10 +18,7 @@ class TodoList extends Component {
 
   loadTodos(){
     getTodos().then(response => {
-        console.log("Initial load");
-        console.log(response);
         let formattedTodos = this.convertToObjects(response);
-        console.log(formattedTodos);
         this.setState({todos: formattedTodos});
       })
     .catch(error => {
@@ -56,18 +51,17 @@ class TodoList extends Component {
     })
   }
 
+  handleItemUpdate = (item, itemId) => () => {
+    let updated = { ...this.state.todos }
+    updated[itemId] = item;
+    this.updateTodosState(updated);
+  }
+
   handleAddTodo(){
-    addTodo(this.createTodo()).then(response => {
-      this.addTodoToState(response);
-    });
-    getTodos().then(response => {
-        console.log("getTodos");
-        console.log(response);
-      })
-    .catch(error => {
-        this.setState({error: "Unable to retrieve todo's"});
-      }
-    );
+    addTodo(this.createTodo())
+      .then(response => {
+        this.addTodoToState(response);
+      });
   }
 
   addTodoToState(newTodo){    
@@ -81,44 +75,39 @@ class TodoList extends Component {
         todos: updatedTodos
       })
   }
-  createBlankTodo = () => ({id: null, text: '', completed:false});
+  createBlankTodo = () => this.createTodo('',false,new Date());
 
   render() {
     return (
-      <div>
-        <div className="TodoList_header">
-          <Logo className="TodoList_logo"/>
-          <Button size="small" className="TodoList_logout"
-            onClick={this.props.onLogout}>LOGOUT</Button>
-        </div>
+      <div className="TodoList_container">
 
-        <div className="TodoList_body">
+        <Typography variant="display1" gutterBottom>
+          To do
+        </Typography>
+        <Divider />
 
-         <Paper className="TodoList_container" elevation={6} >
-            <Typography variant="display1" gutterBottom>
-              To do
-            </Typography>
-            <Divider />
-            {this.renderTodoList(this.state.todos)}
-          </Paper>
-          <Button variant="fab" color="primary" aria-label="add" className="TodoList_button_add" onClick={this.handleAddTodo}>
-            <Icon>add</Icon>
-          </Button>
-        </div>  
+        {this.renderCheckboxList(this.state.todos)}
         
+        <Button variant="fab" 
+            color="primary" 
+            aria-label="add" 
+            className="TodoList_button_add" 
+            onClick={this.handleAddTodo}>
+          <Icon>add</Icon>
+        </Button>
       </div>
     );
   }
 
-  renderTodoList = items => {
-    console.log("items")
-    console.log(items)
+  renderCheckboxList = items => {
+
     if(items !== null && Object.keys(items).length > 0)
       return (
       <CheckboxList items={items} 
         toggleField="completed" 
         textField="text"
-        onItemDelete={this.handleItemDelete}/>)
+        onItemDelete={this.handleItemDelete}
+        onItemUpdate={this.handleItemUpdate}/>)
     return <p>You don't have any Todo items. Get productive, add some.</p>;
   }
 }

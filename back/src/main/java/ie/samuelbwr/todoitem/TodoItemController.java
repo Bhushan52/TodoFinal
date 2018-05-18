@@ -1,7 +1,6 @@
 package ie.samuelbwr.todoitem;
 
 import ie.samuelbwr.security.AuthenticatedUser;
-import ie.samuelbwr.todoitem.exceptions.TodoItemAlreadyRegisteredException;
 import ie.samuelbwr.todoitem.exceptions.TodoItemNotFoundException;
 import ie.samuelbwr.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,9 @@ public class TodoItemController {
     @Autowired
     private TodoItemRepository repository;
 
+    @Autowired
+    private TodoItemMapper mapper;
+
     @GetMapping
     public List<TodoItem> getItems( @AuthenticatedUser User user ) {
         return repository.findAllByUser( user );
@@ -23,22 +25,19 @@ public class TodoItemController {
 
     @PostMapping
     public TodoItem addItem( @AuthenticatedUser User user,
-                             @RequestBody TodoItem todoItem ) {
-        if ( todoItem.getId() != null )
-            throw new TodoItemAlreadyRegisteredException();
-
-        todoItem.setUser( user );
-        return repository.save( todoItem );
+                             @RequestBody TodoItemDto todoItemDto ) {
+        TodoItem item = new TodoItem();
+        item.setUser( user );
+        return repository.save( mapper.dtoToEntity( item, todoItemDto ) );
     }
 
     @PutMapping( "{itemId}" )
     public TodoItem updateItem( @PathVariable( name = "itemId" ) Long itemId,
                                 @AuthenticatedUser User user,
-                                @RequestBody TodoItem todoItem ) {
-        TodoItem item = repository.findByIdAndUser( itemId, user ).orElseThrow( TodoItemNotFoundException::new );
-
-        item.setCompleted( todoItem.getCompleted() );
-        item.setText( todoItem.getText() );
+                                @RequestBody TodoItemDto todoItemDto ) {
+        TodoItem item = repository.findByIdAndUser( itemId, user )
+                .orElseThrow( TodoItemNotFoundException::new );
+        mapper.dtoToEntity( item, todoItemDto );
         return repository.save( item );
     }
 

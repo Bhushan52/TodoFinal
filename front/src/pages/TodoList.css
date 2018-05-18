@@ -1,17 +1,5 @@
-.TodoList_container{
-  	padding: 47px;
-  	margin-bottom: 50px;
-}
-.TodoList_body .TodoList_button_add{
+.TodoList_container .TodoList_button_add{
 	position: fixed;
 	bottom: 30px;
 	right: 30px;
-}
-.TodoList_header{
-	position: relative;
-}
-.TodoList_header .TodoList_logout{
-	position: absolute;
-    top: -12px;
-    right: 16px;
 }

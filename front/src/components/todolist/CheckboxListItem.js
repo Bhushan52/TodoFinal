@@ -5,15 +5,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import ListItem from '@material-ui/core/ListItem';
 import './CheckboxListItem.css';
-import {updateTodo} from '../../api/todoApi';
-import moment from 'moment'
+import {updateTodo} from '../../api/TodoApi';
+import {getRelativeTime} from '../../util/TimeUtil'
 
 class CheckboxListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    	...props.item, id: props.id
+    	...props.item
     };
+    this.handleItemUpdate = this.handleItemUpdate.bind(this);
   }
 
   handleChange = (name, valueProperty, callback) => event => {
@@ -23,17 +24,13 @@ class CheckboxListItem extends Component {
   }
 
   handleItemUpdate = () => {
-    updateTodo(this.state).then(response => {
+    updateTodo(this.state, this.props.id).then(response => {
       this.setState({
         lastUpdate: response.lastUpdate
-      })
+      }, this.props.onItemUpdate(this.state, this.props.id));
     })
   }
 
-  getRelativeLastUpdateTime(){
-    console.log(this.state.lastUpdate);
-    return moment(this.state.lastUpdate).fromNow();
-  }
   render() {
     return (
       <ListItem
@@ -49,7 +46,7 @@ class CheckboxListItem extends Component {
 	          	fullWidth
               multiline
               margin="dense"
-              helperText={this.getRelativeLastUpdateTime()}/>	  	
+              helperText={getRelativeTime(this.state.lastUpdate)}/>	  	
           
             <IconButton aria-label="Delete" onClick={this.props.onItemDelete(this.state.id)}>
               <Icon>delete</Icon>

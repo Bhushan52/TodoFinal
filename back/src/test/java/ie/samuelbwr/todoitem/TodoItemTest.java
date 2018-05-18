@@ -1,8 +1,8 @@
 package ie.samuelbwr.todoitem;
 
-import ie.samuelbwr.todoitem.exceptions.TodoItemAlreadyRegisteredException;
 import ie.samuelbwr.todoitem.exceptions.TodoItemNotFoundException;
 import ie.samuelbwr.user.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -16,12 +16,14 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @RunWith( MockitoJUnitRunner.class )
 @SpringBootTest
-public class TodoListTest {
+public class TodoItemTest {
 
     private static final String USER = "test_user";
     private static final String PASS = "test_pass";
@@ -32,12 +34,20 @@ public class TodoListTest {
     @Mock
     private TodoItemRepository repository;
 
+    @Mock
+    private TodoItemMapper mapper;
+
     @Captor
     private ArgumentCaptor<TodoItem> itemArgumentCaptor;
 
+    @Before
+    public void before(){
+        doCallRealMethod().when( mapper ).dtoToEntity( any(),any() );
+    }
+
     @Test
     public void shouldSetAuthenticatedUserToTodoItem() {
-        controller.addItem( createSimpleUser(), createTodoItem( null, "Test", false ) );
+        controller.addItem( createSimpleUser(), createTodoItemDto( "Test", false ) );
         verify( repository ).save( itemArgumentCaptor.capture() );
         assertNotNull( itemArgumentCaptor.getValue().getUser() );
         assertEquals( USER, itemArgumentCaptor.getValue().getUser().getUsername() );
@@ -50,9 +60,11 @@ public class TodoListTest {
         Long itemId = 1l;
         User user = createSimpleUser();
 
-        doReturn( Optional.of( createTodoItem( itemId, oldText, true ) ) )
+        doReturn( Optional.of( createTodoItem( oldText, true ) ) )
                 .when( repository ).findByIdAndUser( itemId, user );
-        controller.updateItem( itemId, user, createTodoItem( null, newText, false ) );
+
+        controller.updateItem( itemId, user, createTodoItemDto(  newText, false ) );
+
         verify( repository ).save( itemArgumentCaptor.capture() );
 
         assertEquals( newText, itemArgumentCaptor.getValue().getText() );
@@ -61,17 +73,17 @@ public class TodoListTest {
 
     @Test(expected = TodoItemNotFoundException.class )
     public void shouldNotUpdateOtherUsersTodoItems() {
-        controller.updateItem( 2l, createSimpleUser(), createTodoItem( null, "text", false ) );
+        controller.updateItem( 2l, createSimpleUser(), createTodoItemDto(  "text", false ) );
     }
 
-    @Test(expected = TodoItemAlreadyRegisteredException.class )
-    public void shouldNotAddTodoItemsWithId() {
-        controller.addItem( createSimpleUser(), createTodoItem( 1l, "text", false ) );
+    private TodoItemDto createTodoItemDto( String text, boolean completed ) {
+        TodoItemDto item = new TodoItemDto();
+        item.setText( text );
+        item.setCompleted( completed );
+        return item;
     }
-
-    private TodoItem createTodoItem( Long id, String text, boolean completed ) {
+    private TodoItem createTodoItem( String text, boolean completed ) {
         TodoItem item = new TodoItem();
-        item.setId( id );
         item.setText( text );
         item.setCompleted( completed );
         return item;
