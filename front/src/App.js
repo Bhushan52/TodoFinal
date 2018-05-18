@@ -16,11 +16,7 @@ class App extends React.Component {
   loadSessionUser = () => {
     getSessionUser()
     .then(user => this.assignUser(user))
-    .catch(error => {
-        console.log(error);
-        this.assignUser(null);
-      }
-    );
+    .catch(error => this.assignUser(null))
   }
 
   componentDidMount = () => {
@@ -28,19 +24,15 @@ class App extends React.Component {
   }
 
   assignUser = (user) => {
-    if(user !==  null)
-      this.setUserState(user, true, false)
+    if(user !==  null && user.id !== null){
+      this.setUserState(user, true, false) }   
     else
       this.setUserState(null, false, false)
   }
 
-  handleAuthenticationSuccess = () =>{
-    this.loadSessionUser();
-  }
+  handleAuthenticationSuccess = () => this.loadSessionUser();
 
-  handleAuthenticationFail = () => {
-    this.assignUser(null);
-  }
+  handleAuthenticationFail = () => this.assignUser( null );
 
   handleLogout(){
     this.assignUser(null)
@@ -48,7 +40,7 @@ class App extends React.Component {
   }
 
   setUserState = (user, isAuthenticated, isLoading) =>{
-    this.setState(() => ({
+    this.setState(({
       currentUser: user,
       isAuthenticated: isAuthenticated,
       isLoading: isLoading
