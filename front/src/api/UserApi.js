@@ -6,7 +6,11 @@ const LOGOUT_PATH = "/logout";
 
 export const getSessionUser = () => {
      return doRequest(USER_PATH)
-    .then(response => response.json());
+    .then( response => {
+    	if( response.ok )
+    		return response.json();
+    	throw new Error('User not found.');
+    });
 }
 
 export const authenticate = (username, password) => {
