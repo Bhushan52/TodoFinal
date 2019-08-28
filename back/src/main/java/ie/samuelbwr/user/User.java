@@ -26,6 +26,12 @@ public class User implements UserDetails {
 
     @Setter
     private String username;
+    
+    @Setter
+    private String firstName;
+    
+    @Setter
+    private String lastName;
 
     @JsonIgnore
     private String password;

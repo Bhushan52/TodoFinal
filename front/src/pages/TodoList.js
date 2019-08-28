@@ -82,7 +82,7 @@ class TodoList extends Component {
       <div className="TodoList_container">
 
         <Typography variant="display1" gutterBottom>
-          To do
+          To do list
         </Typography>
         <Divider />
 

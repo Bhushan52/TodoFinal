@@ -3,6 +3,7 @@ import {doRequest} from './BaseApi'
 const USER_PATH = "/api/user";
 const AUTHENTICATION_PATH = "/login";
 const LOGOUT_PATH = "/logout";
+const SIGNUP_PATH = "/api/user/signup";
 
 export const getSessionUser = () => {
      return doRequest(USER_PATH)
@@ -22,6 +23,17 @@ export const authenticate = (username, password) => {
 	    },
 	    body: loginParams({username, password})
 	 });
+}
+
+export const signup = (userName, firstName, lastName, password) => {
+	return doRequest(SIGNUP_PATH, {
+	   method: 'post',
+	   mode:'no-cors',
+	   headers: {
+		 'Content-Type': 'application/x-www-form-urlencoded'
+	   },
+	   body: loginParams({userName, firstName, lastName, password})
+	});
 }
 
 export const logout = () => {
